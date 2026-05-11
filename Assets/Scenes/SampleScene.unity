@@ -564,7 +564,8 @@ GameObject:
   - component: {fileID: 774189912}
   - component: {fileID: 774189911}
   - component: {fileID: 774189910}
-  - component: {fileID: 774189909}
+  - component: {fileID: 774189915}
+  - component: {fileID: 774189914}
   m_Layer: 7
   m_Name: Wolf
   m_TagString: Untagged
@@ -572,25 +573,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &774189909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 774189908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 994ad7854efcdeb4ab351a53b0b37aee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Wolf
-  speed: 6.5
-  rotationSpeed: 5
-  visionRadius: 15
-  eatDistance: 1.5
-  sheepLayer:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!136 &774189910
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -687,6 +669,114 @@ Transform:
   - {fileID: 220964450}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &774189914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774189908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f12546cfd9416434ca5f7741c9caea95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Wolf.Wolf
+  speed: 6.5
+  rotationSpeed: 5
+  visionRadius: 15
+  eatDistance: 1.5
+  sheepLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  safeZoneRadius: 40
+  currentState: 0
+--- !u!114 &774189915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774189908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 175bcc97dbf20bd46a36f29e487fd109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.AI.Utility.WolfUtilityAI
+  hunger: 50
+  stamina: 100
+  health: 100
+  hungerCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  staminaCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.30625153
+      value: 1.0011902
+      inSlope: -0.74644095
+      outSlope: -0.74644095
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0000284
+      value: 0.48332673
+      inSlope: -0.74644095
+      outSlope: -0.74644095
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  healthCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1039,7 +1129,7 @@ GameObject:
   - component: {fileID: 2056893511}
   - component: {fileID: 2056893510}
   - component: {fileID: 2056893509}
-  - component: {fileID: 2056893508}
+  - component: {fileID: 2056893513}
   m_Layer: 6
   m_Name: Sheep
   m_TagString: Untagged
@@ -1047,33 +1137,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2056893508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2056893507}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2300a3232f78114da70cfd8962f33b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Sheep
-  speed: 5
-  rotationSpeed: 4
-  neighborRadius: 5
-  avoidanceRadius: 2
-  predatorAvoidanceRadius: 10
-  cohesionWeight: 1
-  alignmentWeight: 1
-  separationWeight: 1.5
-  fleeWeight: 5
-  sheepLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  wolfLayer:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!136 &2056893509
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1170,6 +1233,33 @@ Transform:
   - {fileID: 987021577}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2056893513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2056893507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e626ba5505cfe61458c21052887411bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Sheep
+  speed: 5
+  rotationSpeed: 4
+  neighborRadius: 5
+  avoidanceRadius: 2
+  predatorAvoidanceRadius: 10
+  cohesionWeight: 1
+  alignmentWeight: 1
+  separationWeight: 1.5
+  fleeWeight: 5
+  sheepLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  wolfLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
