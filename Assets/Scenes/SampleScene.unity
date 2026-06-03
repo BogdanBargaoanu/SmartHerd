@@ -681,6 +681,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f12546cfd9416434ca5f7741c9caea95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Wolf.Wolf
+  wolfAvoidanceRadius: 2
+  separationWeight: 3
+  wolfLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  worldRadius: 50
   speed: 6.5
   rotationSpeed: 5
   visionRadius: 15
@@ -718,7 +724,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 1
+      time: 0.9916687
       value: 1
       inSlope: 0
       outSlope: 0
@@ -735,17 +741,17 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0.30625153
       value: 1.0011902
-      inSlope: -0.74644095
-      outSlope: -0.74644095
+      inSlope: -0.70857114
+      outSlope: -0.70857114
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1.0000284
-      value: 0.48332673
-      inSlope: -0.74644095
-      outSlope: -0.74644095
+      time: 1.0057962
+      value: 0.505513
+      inSlope: -0.70857114
+      outSlope: -0.70857114
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
