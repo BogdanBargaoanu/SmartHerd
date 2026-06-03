@@ -158,7 +158,7 @@ public class Sheep : MonoBehaviour
 
             alignment += col.transform.forward;
 
-            if (dist < avoidanceRadius)
+            if (dist > 0.01f && dist < avoidanceRadius)
             {
                 separation +=
                     (transform.position - col.transform.position)

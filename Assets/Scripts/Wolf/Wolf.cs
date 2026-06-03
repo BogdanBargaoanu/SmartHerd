@@ -8,6 +8,14 @@ namespace Assets.Scripts.Wolf
 {
     public class Wolf : MonoBehaviour
     {
+        [Header("Pack Behaviour")]
+        public float wolfAvoidanceRadius = 2f;
+        public float separationWeight = 3f;
+        public LayerMask wolfLayer;
+
+        [Header("World")]
+        public float worldRadius = 50f;
+
         [Header("Movement")]
         public float speed = 6.5f;
         public float rotationSpeed = 5f;
@@ -30,6 +38,8 @@ namespace Assets.Scripts.Wolf
         private Node behaviorTree;
 
         private WolfUtilityAI utilityAI;
+
+        private float wanderTimer;
 
         public WolfState currentState;
 
@@ -96,29 +106,36 @@ namespace Assets.Scripts.Wolf
 
         public Transform FindNearestSheep()
         {
-            Collider[] colliders = Physics.OverlapSphere(
-                transform.position,
-                visionRadius,
-                sheepLayer
-            );
+            Collider[] colliders =
+                Physics.OverlapSphere(
+                    transform.position,
+                    visionRadius,
+                    sheepLayer
+                );
 
             float minDistance = Mathf.Infinity;
 
-            currentTarget = null;
+            Transform nearest = null;
 
             foreach (Collider col in colliders)
             {
-                float dist = Vector3.Distance(
-                    transform.position,
-                    col.transform.position
-                );
+                if (col == null)
+                    continue;
+
+                float dist =
+                    Vector3.Distance(
+                        transform.position,
+                        col.transform.position
+                    );
 
                 if (dist < minDistance)
                 {
                     minDistance = dist;
-                    currentTarget = col.transform;
+                    nearest = col.transform;
                 }
             }
+
+            currentTarget = nearest;
 
             return currentTarget;
         }
@@ -126,7 +143,15 @@ namespace Assets.Scripts.Wolf
         public void ChaseTarget()
         {
             if (currentTarget == null)
-                return;
+            {
+                FindNearestSheep();
+
+                if (currentTarget == null)
+                {
+                    Wander();
+                    return;
+                }
+            }
 
             Vector3 dir =
                 (currentTarget.position - transform.position)
@@ -134,29 +159,53 @@ namespace Assets.Scripts.Wolf
 
             velocity = dir * speed;
 
-            float dist = Vector3.Distance(
-                transform.position,
-                currentTarget.position
-            );
+            velocity += CalculateWolfSeparation();
+
+            float dist =
+                Vector3.Distance(
+                    transform.position,
+                    currentTarget.position
+                );
 
             if (dist < eatDistance)
             {
-                Destroy(currentTarget.gameObject);
+                GameObject sheepToDestroy =
+                    currentTarget.gameObject;
 
-                utilityAI.hunger -= 40f;
+                currentTarget = null;
 
-                utilityAI.stamina += 20f;
+                Destroy(sheepToDestroy);
+
+                utilityAI.hunger =
+                    Mathf.Max(
+                        0,
+                        utilityAI.hunger - 40f
+                    );
+
+                utilityAI.stamina =
+                    Mathf.Min(
+                        100,
+                        utilityAI.stamina + 20f
+                    );
             }
         }
 
         public void Wander()
         {
-            if (Random.value < 0.01f)
+            wanderTimer += Time.deltaTime;
+
+            if (wanderTimer >= 2f)
             {
                 PickRandomDirection();
+                wanderTimer = 0f;
             }
 
-            velocity = wanderDirection * speed * 0.5f;
+            velocity =
+                wanderDirection *
+                speed *
+                0.5f;
+
+            velocity += CalculateWolfSeparation();
         }
 
         void PickRandomDirection()
@@ -172,27 +221,74 @@ namespace Assets.Scripts.Wolf
         void Retreat()
         {
             Vector3 dir =
-                (Vector3.zero - transform.position)
+                (-transform.position)
                 .normalized;
 
             velocity = dir * speed;
+
+            velocity += CalculateWolfSeparation();
         }
 
         void Move()
         {
             velocity.y = 0;
 
-            if (velocity != Vector3.zero)
+            if (transform.position.magnitude > worldRadius)
+            {
+                Vector3 centerForce =
+                    (-transform.position).normalized;
+
+                velocity += centerForce * speed;
+            }
+
+            if (velocity.sqrMagnitude > 0.01f)
             {
                 transform.rotation =
                     Quaternion.Slerp(
                         transform.rotation,
-                        Quaternion.LookRotation(velocity),
+                        Quaternion.LookRotation(
+                            velocity.normalized
+                        ),
                         rotationSpeed * Time.deltaTime
                     );
             }
 
-            transform.position += velocity * Time.deltaTime;
+            transform.position +=
+                velocity * Time.deltaTime;
+        }
+
+        private Vector3 CalculateWolfSeparation()
+        {
+            Vector3 separation = Vector3.zero;
+
+            Collider[] wolves =
+                Physics.OverlapSphere(
+                    transform.position,
+                    wolfAvoidanceRadius,
+                    wolfLayer
+                );
+
+            foreach (Collider wolf in wolves)
+            {
+                if (wolf.gameObject == gameObject)
+                    continue;
+
+                float dist =
+                    Vector3.Distance(
+                        transform.position,
+                        wolf.transform.position
+                    );
+
+                if (dist > 0.01f)
+                {
+                    separation +=
+                        (transform.position -
+                         wolf.transform.position).normalized
+                        / dist;
+                }
+            }
+
+            return separation.normalized * separationWeight;
         }
 
         void OnDrawGizmos()
