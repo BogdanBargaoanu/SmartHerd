@@ -153,19 +153,15 @@ namespace Assets.Scripts.Wolf
                 }
             }
 
-            Vector3 dir =
-                (currentTarget.position - transform.position)
-                .normalized;
-
+            Vector3 dir = (currentTarget.position - transform.position).normalized;
             velocity = dir * speed;
 
-            velocity += CalculateWolfSeparation();
+            float dist = Vector3.Distance(transform.position, currentTarget.position);
 
-            float dist =
-                Vector3.Distance(
-                    transform.position,
-                    currentTarget.position
-                );
+            if (dist > eatDistance * 2f)
+            {
+                velocity += CalculateWolfSeparation();
+            }
 
             if (dist < eatDistance)
             {
@@ -281,10 +277,8 @@ namespace Assets.Scripts.Wolf
 
                 if (dist > 0.01f)
                 {
-                    separation +=
-                        (transform.position -
-                         wolf.transform.position).normalized
-                        / dist;
+                    separation += (transform.position - wolf.transform.position).normalized
+                        / Mathf.Max(dist, 0.5f);
                 }
             }
 

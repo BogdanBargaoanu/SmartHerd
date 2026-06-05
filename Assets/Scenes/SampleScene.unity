@@ -685,12 +685,12 @@ MonoBehaviour:
   separationWeight: 3
   wolfLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   worldRadius: 50
-  speed: 6.5
+  speed: 9
   rotationSpeed: 5
-  visionRadius: 15
-  eatDistance: 1.5
+  visionRadius: 6.5
+  eatDistance: 4
   sheepLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -915,7 +915,7 @@ MonoBehaviour:
   sheepPrefab: {fileID: 2056893507}
   wolfPrefab: {fileID: 774189908}
   startingSheep: 50
-  startingWolves: 2
+  startingWolves: 10
   spawnRadius: 20
 --- !u!4 &1158151073
 Transform:
